@@ -4,10 +4,10 @@ CONFIG = {
     'python': '/usr/bin/python',
     'pythonpath': '/home/box/web',
     'args': (
-        '-bind=0.0.0.0:8080',
+        '--bind=0.0.0.0:8080',
         '--daemon',
         '--workers=4',
         '--timeout=60',
-        'hello:app_start'
+        'hello:application',
     )
 }
