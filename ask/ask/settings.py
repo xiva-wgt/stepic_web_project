@@ -90,7 +90,7 @@ else:
             'NAME': 'djdb',
             'USER': 'django',
             'PASSWORD': 'qwertypass',
-            'HOST': '127.0.0.1',
+            'HOST': 'localhost',
             'PORT': '3306',
         }
     }
