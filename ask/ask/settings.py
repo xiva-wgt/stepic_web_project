@@ -89,7 +89,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'djdb',
             'USER': 'django',
-            'PASSWORD': 'qwertypass',
+            'PASSWORD': 'qwertypass123',
             'HOST': 'localhost',
             'PORT': '3306',
         }
