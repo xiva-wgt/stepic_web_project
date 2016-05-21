@@ -17,12 +17,15 @@ class QuestionManager(models.Manager):
 
 class Question(models.Model):
     objects = QuestionManager()
-    title = models.CharField(max_length=255)
-    text = models.TextField()
-    added_at = models.DateField()
-    rating = models.IntegerField()
+    title = models.CharField(default=0, max_length=255)
+    text = models.TextField(default='')
+    added_at = models.DateField(null=True)
+    rating = models.IntegerField(default=0)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    likes = models.ManyToManyField(User)
+    likes = models.ManyToManyField(User, related_name='user_to_likes')
+
+    def __str__(self):
+        return self.text
 
     #Question - вопрос
     #title - заголовок вопроса
@@ -34,9 +37,9 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    text = models.TextField()
-    added_at = models.DateField()
-    question = models.OneToOneField()
+    text = models.TextField(default='')
+    added_at = models.DateField(null=True)
+    question = models.OneToOneField(Question, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
     #Answer - ответ
