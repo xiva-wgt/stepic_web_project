@@ -18,8 +18,6 @@ from django.contrib import admin
 
 from . import views
 
-admin.autodiscover()
-
 urlpatterns = patterns(
     'qa.views',
     url(r'^$', views.test),
@@ -31,3 +29,6 @@ urlpatterns = patterns(
     url(r'^popular/.*$', views.test),
     url(r'^new/.*$', views.test)
 )
+
+admin.autodiscover()
+
