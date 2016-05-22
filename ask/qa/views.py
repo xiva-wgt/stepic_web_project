@@ -7,6 +7,7 @@ from models import Question
 from models import Answer
 from forms import AskForm
 from forms import AnswerForm
+from django.template import RequestContext
 # import finish
 
 from django.shortcuts import render, get_object_or_404
@@ -94,7 +95,7 @@ def question(request, *args, **kwargs):
 
     return render(
         request, 'question.html',
-        {'question': gs, 'form': form})
+        {'question': gs, 'form': form}, RequestContext(request))
 
 
 def ask(request):
@@ -106,7 +107,7 @@ def ask(request):
             return HttpResponseRedirect(url)
     else:
         form = AskForm()
-    return render(request, 'ask.html', {'form': form, })
+    return render(request, 'ask.html', {'form': form, }, RequestContext(request))
 
 
 #def paginate(request, qs):
