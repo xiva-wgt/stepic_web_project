@@ -14,6 +14,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
 
+
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
 
@@ -95,7 +96,7 @@ def question(request, *args, **kwargs):
 
     return render(
         request, 'question.html',
-        {'question': gs, 'form': form}, RequestContext(request))
+        {'question': gs, 'form': form})
 
 
 def ask(request):
