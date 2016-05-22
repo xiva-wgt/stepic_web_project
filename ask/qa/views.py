@@ -40,7 +40,8 @@ def index(request, *args, **kwargs):
 
     request_page = request.GET.get('page')
     if not isinstance(request_page, int):
-        if request_page.isdigits():
+        if isinstance(request_page, basestring) and \
+           request_page.isdigits():
             page = int(request_page)
         else:
             page = 1
@@ -62,7 +63,8 @@ def popular(request, *args, **kwargs):
 
     request_page = request.GET.get('page')
     if not isinstance(request_page, int):
-        if request_page.isdigits():
+        if isinstance(request_page, basestring) and \
+           request_page.isdigits():
             page = int(request_page)
         else:
             page = 1
