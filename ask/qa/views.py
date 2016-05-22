@@ -38,15 +38,10 @@ def inittest25(request, *args, **kwargs):
 @require_GET
 def index(request, *args, **kwargs):
 
-    request_page = request.GET.get('page')
-    if not isinstance(request_page, int):
-        if isinstance(request_page, basestring) and \
-           request_page.isdigits():
-            page = int(request_page)
-        else:
-            page = 1
-    else:
-        page = request_page
+    try:
+        page = int(request.GET.get("page"))
+    except (ValueError, TypeError):
+        page = 1
 
     questions = Question.objects.new()
     paginator = Paginator(questions, 10)
@@ -61,15 +56,10 @@ def index(request, *args, **kwargs):
 @require_GET
 def popular(request, *args, **kwargs):
 
-    request_page = request.GET.get('page')
-    if not isinstance(request_page, int):
-        if isinstance(request_page, basestring) and \
-           request_page.isdigits():
-            page = int(request_page)
-        else:
-            page = 1
-    else:
-        page = request_page
+    try:
+        page = int(request.GET.get("page"))
+    except (ValueError, TypeError):
+        page = 1
 
     questions = Question.objects.popular()
 
