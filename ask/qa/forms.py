@@ -11,6 +11,7 @@ class AskForm(forms.Form):
         pass
 
     def save(self):
+        self.cleaned_data['author_id'] = '1'
         question = Question(**self.cleaned_data)
         question.save()
         return question
