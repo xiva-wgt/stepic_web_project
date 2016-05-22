@@ -1,6 +1,6 @@
 from django import forms
 
-from qa.models import Question, Answer
+from models import Question, Answer
 
 
 class AskForm(forms.Form):
@@ -11,8 +11,8 @@ class AskForm(forms.Form):
         pass
 
     def save(self):
-        self.cleaned_data['author_id'] = '1'
         question = Question(**self.cleaned_data)
+        question.author_id = self._user.id
         question.save()
         return question
 
@@ -34,5 +34,6 @@ class AnswerForm(forms.Form):
 
     def save(self):
         answer = Answer(**self.cleaned_data)
+        answer.author_id = self._user.id
         answer.save()
         return answer
