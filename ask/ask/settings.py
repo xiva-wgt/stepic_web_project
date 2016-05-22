@@ -56,7 +56,9 @@ if sys.platform.startswith('win'):  # for test on windows
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
 else:
-    MIDDLEWARE_CLASSES = []
+    MIDDLEWARE_CLASSES = [
+        'django.middleware.csrf.CsrfViewMiddleware',
+    ]
 
 ROOT_URLCONF = 'ask.urls'
 
