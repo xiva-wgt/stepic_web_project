@@ -75,15 +75,11 @@ def popular(request, *args, **kwargs):
          'questions': page.object_list, 'page': page})
 
 
-def question(request, *args, **kwargs):
-    number = kwargs.get('pk_question')
-    if not isinstance(number, int):
-        try:
-            number = int(number)
-        except (ValueError, TypeError):
-            number = 0
-
-    gs = get_object_or_404(Question, pk=number)
+def question(request, pk_question):
+    try:
+        gs = Question.objects.get(id=pk_question)
+    except Question.DoesNotExist:
+        raise Http404
 
     if request.method == "POST":
         form = AnswerForm(request.POST)
