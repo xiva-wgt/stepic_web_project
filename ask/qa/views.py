@@ -1,16 +1,17 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 # for test with inittest25 import start
 from django.contrib.auth.models import User
 from django.db.models import Max
 from models import Question
 from models import Answer
+from forms import AskForm
+from forms import AnswerForm
 # import finish
 
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
-
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -83,8 +84,30 @@ def question(request, *args, **kwargs):
 
     gs = get_object_or_404(Question, pk=number)
 
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            _ = form.save()
+            redirect_url = gs.get_url()
+            return HttpResponseRedirect(redirect_url)
+    else:
+        form = AnswerForm(initial={'question': gs.id})
+
     return render(
-        request, 'question.html', {'question': gs})
+        request, 'question.html',
+        {'question': gs, 'form': form})
+
+
+def ask(request):
+    if request.method == "POST":
+        form = AskForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            url = post.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+    return render(request, 'ask.html', {'form': form, })
 
 
 #def paginate(request, qs):
