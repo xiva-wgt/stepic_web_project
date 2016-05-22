@@ -73,7 +73,6 @@ def popular(request, *args, **kwargs):
          'questions': page.object_list, 'page': page})
 
 
-@require_GET
 def question(request, *args, **kwargs):
     number = kwargs.get('pk_question')
     if not isinstance(number, int):
