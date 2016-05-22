@@ -1,5 +1,113 @@
 from django.http import HttpResponse
 
+# for test with inittest25 import start
+from django.contrib.auth.models import User
+from django.db.models import Max
+from models import Question
+from models import Answer
+# import finish
+
+from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import require_GET
+from django.core.paginator import Paginator
+
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
+
+
+@require_GET
+def inittest25(request, *args, **kwargs):
+    # copy from test site
+    res = Question.objects.all().aggregate(Max('rating'))
+    max_rating = res['rating__max'] or 0
+    user, _ = User.objects.get_or_create(username='test', password='test')
+    for i in range(30):
+        question = Question.objects.create(title='question ' + str(i), text='text ' + str(i),
+                                           author=user, rating=max_rating + i)
+    question = Question.objects.create(title='question last', text='text', author=user)
+    question, _ = Question.objects.get_or_create(pk=3141592, title='question about pi',
+                                                 text='what is the last digit?', author=user)
+    question.answer_set.all().delete()
+    for i in range(10):
+        answer = Answer.objects.create(text='answer ' + str(i), question=question, author=user)
+
+    return HttpResponse("Init for test done.")
+
+
+@require_GET
+def index(request, *args, **kwargs):
+
+    request_page = request.GET.get('page')
+    if not isinstance(request_page, int):
+        if request_page.isdigits():
+            page = int(request_page)
+        else:
+            page = 1
+    else:
+        page = request_page
+
+    questions = Question.objects.new()
+    paginator = Paginator(questions, 10)
+    page = paginator.page(page)
+
+    return render(
+        request, 'list.html',
+        {'title': 'Lastest question', 'paginator': paginator,
+         'questions': page.object_list, 'page': page})
+
+
+@require_GET
+def popular(request, *args, **kwargs):
+
+    request_page = request.GET.get('page')
+    if not isinstance(request_page, int):
+        if request_page.isdigits():
+            page = int(request_page)
+        else:
+            page = 1
+    else:
+        page = request_page
+
+    questions = Question.objects.popular()
+
+    paginator = Paginator(questions, 10)
+    page = paginator.page(page)
+
+    return render(
+        request, 'list.html',
+        {'title': 'Popular question', 'paginator': paginator,
+         'questions': page.object_list, 'page': page})
+
+
+@require_GET
+def question(request, *args, **kwargs):
+    number = kwargs.get('pk_question')
+    if not isinstance(number, int):
+        if number.isdigits():
+            number = int(number)
+        else:
+            number = 0
+    gs = get_object_or_404(Question, pk=number)
+
+    return render(
+        request, 'question.html', {'question': gs})
+
+
+#def paginate(request, qs):
+#    try:
+#        limit = int(request.GET.get('limit', 10))
+#    except ValueError:
+#        limit = 10
+#    if limit > 100:
+#        limit = 10
+#    try:
+#        page = int(request.GET.get('page', 1))
+#    except ValueError:
+#        raise Http404
+#    paginator = Paginator(qs, limit)
+#    try:
+#       page = paginator.page(page)
+#    except EmptyPage:
+#        page = paginator.page(paginator.num_pages)
+#    return page

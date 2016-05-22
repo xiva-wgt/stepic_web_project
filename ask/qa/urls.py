@@ -21,12 +21,12 @@ from . import views
 urlpatterns = patterns(
     'qa.views',
     url(r'^$', views.test),
+    url(r'^inittest25/.*$', views.inittest25),
     url(r'^login/.*$', views.test),
     url(r'^signup/.*$', views.test),
-    url(r'^question/\d+/$', views.test),
-    url(r'^question/\d+$', views.test),
+    url(r'^question/(?P<pk_question>\d+)/$', views.question),
     url(r'^ask/.*$', views.test),
-    url(r'^popular/.*$', views.test),
+    url(r'^popular/.*$', views.popular),
     url(r'^new/.*$', views.test)
 )
 

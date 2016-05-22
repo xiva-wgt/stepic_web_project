@@ -9,10 +9,12 @@ from django.contrib.auth.models import User
 
 class QuestionManager(models.Manager):
     def new(self):
-        pass
+        qs = self.order_by('-id')
+        return qs
 
     def popular(self):
-        pass
+        qs = self.order_by('-rating')
+        return qs
 
 
 class Question(models.Model):
@@ -21,11 +23,17 @@ class Question(models.Model):
     text = models.TextField(default='')
     added_at = models.DateField(null=True)
     rating = models.IntegerField(default=0)
-    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(User, related_name='user_to_likes')
 
     def __str__(self):
-        return self.text
+        return self.title
+
+    def __unicode__(self):
+        return self.title
+
+    def get_url(self):
+        return "/question/{0}/".format(self.id)
 
     #Question - вопрос
     #title - заголовок вопроса
@@ -39,8 +47,14 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.TextField(default='')
     added_at = models.DateField(null=True)
-    question = models.OneToOneField(Question, on_delete=models.DO_NOTHING)
-    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    question = models.OneToOneField(Question, on_delete=models.SET_NULL)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.text
+
+    def __unicode__(self):
+        return self.text
 
     #Answer - ответ
     #text - текст ответа
