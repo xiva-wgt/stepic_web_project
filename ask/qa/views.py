@@ -76,10 +76,11 @@ def popular(request, *args, **kwargs):
 def question(request, *args, **kwargs):
     number = kwargs.get('pk_question')
     if not isinstance(number, int):
-        if number.isdigits():
+        try:
             number = int(number)
-        else:
+        except (ValueError, TypeError):
             number = 0
+
     gs = get_object_or_404(Question, pk=number)
 
     return render(
