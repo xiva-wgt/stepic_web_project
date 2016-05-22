@@ -108,7 +108,7 @@ def ask(request):
             return HttpResponseRedirect(url)
     else:
         form = AskForm()
-    return render(request, 'ask.html', {'form': form, }, RequestContext(request))
+    return render(request, 'ask.html', {'form': form})
 
 
 #def paginate(request, qs):
