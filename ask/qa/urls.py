@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^inittest25/.*$', views.inittest25),
     url(r'^login/.*$', views.user_login, name='login'),
     url(r'^signup/.*$', views.user_signup, name='signup'),
+    url(r'^logout/.*$', views.user_logout, name='logout'),
     url(r'^question/(?P<pk_question>\d+)/$', views.question, name='question'),
     url(r'^ask/.*$', views.ask),
     url(r'^popular/.*$', views.popular),
