@@ -109,7 +109,7 @@ def question_detail(request, pk_question):
     qs = get_object_or_404(Question, id=pk_question)
     answers = qs.answer_set.all()
     form = AnswerForm(initial={'question': str(pk_question)})
-    return render(request, 'detail.html', {
+    return render(request, 'question.html', {
         'question': qs,
         'answers': answers,
         'form': form,
