@@ -78,7 +78,6 @@ def popular(request, *args, **kwargs):
 
 def question(request, pk_question):
     gs = get_object_or_404(Question, id=pk_question)
-    answers = gs.answer_set.all()
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():

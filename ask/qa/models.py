@@ -33,6 +33,9 @@ class Question(models.Model):
     def __unicode__(self):
         return self.title
 
+    def get_url(self):
+        return "/question/{0}/".format(self.id)
+
     def get_absolute_url(self):
         return reverse('question', kwargs={'pk': self.pk})
 
