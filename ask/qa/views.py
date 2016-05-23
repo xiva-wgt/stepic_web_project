@@ -13,6 +13,7 @@ from django.template import RequestContext
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse
 
 
 def test(request, *args, **kwargs):
@@ -84,6 +85,7 @@ def question(request, pk_question):
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
+            form._user = request.user
             _ = form.save()
             redirect_url = gs.get_url()
             return HttpResponseRedirect(redirect_url)
@@ -101,11 +103,23 @@ def ask(request):
         if form.is_valid():
             form._user = request.user
             post = form.save()
-            url = post.get_url()
-            return HttpResponseRedirect(url)
+            #redirect_url = post.get_url()
+            redirect_url = reverse('question_detail', args=[post.id])
+            return HttpResponseRedirect(redirect_url)
     else:
         form = AskForm()
     return render(request, 'ask.html', {'form': form})
+
+
+def question_detail(request, pk):
+    qs = get_object_or_404(Question, id=pk)
+    answers = qs.answer_set.all()
+    form = AnswerForm(initial={'question': str(pk)})
+    return render(request, 'detail.html', {
+        'question': qs,
+        'answers': answers,
+        'form': form,
+    })
 
 
 #def paginate(request, qs):
