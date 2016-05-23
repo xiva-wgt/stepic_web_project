@@ -9,7 +9,7 @@ from forms import AskForm
 from forms import AnswerForm
 from forms import LoginForm
 from forms import SignupForm
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 # import finish
 
 from django.shortcuts import render, get_object_or_404
@@ -145,3 +145,9 @@ def user_login(request):
     return render(request, 'login.html', {'form': form,
                                           'user': request.user,
                                           'session': request.session})
+
+@require_GET
+def user_logout(request):
+    logout(request)
+    redirect_url = request.GET.get('continue', '/')
+    return HttpResponseRedirect(redirect_url)
