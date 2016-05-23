@@ -99,7 +99,7 @@ def ask(request):
             form._user = request.user
             post = form.save()
             redirect_url = post.get_url()
-            redirect_url = reverse('question', args=[post.id])
+            #redirect_url = reverse('question', args=[post.id])
             return HttpResponseRedirect(redirect_url)
     else:
         form = AskForm()
