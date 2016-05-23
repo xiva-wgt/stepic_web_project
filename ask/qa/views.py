@@ -98,7 +98,8 @@ def ask(request):
         if form.is_valid():
             post = form.save()
             #redirect_url = post.get_url()
-            redirect_url = reverse('question', args=[post.id])
+            redirect_url = post.get_absolute_url()
+            #redirect_url = reverse('question', args=[post.id])
             return HttpResponseRedirect(redirect_url)
     else:
         form = AskForm()
