@@ -14,7 +14,7 @@
     {% endfor %}
     </ul>
     <hr>
-    <form method="post" action="{{ question.get_url }}">
+    <form method="post" action="{{ question.get_absolute_url }}">
         <fieldset>
         {% csrf_token %}
         {{ form.as_p }}

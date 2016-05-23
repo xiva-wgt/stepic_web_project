@@ -24,7 +24,7 @@ class Question(models.Model):
     text = models.TextField(default='')
     added_at = models.DateField(null=True)
     rating = models.IntegerField(default=0)
-    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, default=1)
     likes = models.ManyToManyField(User, related_name='user_to_likes')
 
     def __str__(self):
@@ -34,7 +34,7 @@ class Question(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('question_detail', kwargs={'pk': self.pk})
+        return reverse('question', kwargs={'pk': self.pk})
 
     #Question - вопрос
     #title - заголовок вопроса
@@ -49,7 +49,7 @@ class Answer(models.Model):
     text = models.TextField(default='')
     added_at = models.DateField(null=True)
     question = models.ForeignKey(Question, null=True, on_delete=models.SET_NULL)
-    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    author = models.ForeignKey(User, null=True, default=1, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.text

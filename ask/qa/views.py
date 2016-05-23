@@ -77,24 +77,21 @@ def popular(request, *args, **kwargs):
 
 
 def question(request, pk_question):
-    try:
-        gs = Question.objects.get(id=pk_question)
-    except Question.DoesNotExist:
-        raise Http404
-
+    gs = get_object_or_404(Question, id=pk_question)
+    answers = gs.answer_set.all()
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
             form._user = request.user
             _ = form.save()
-            redirect_url = gs.get_url()
+            redirect_url = gs.get_absolute_url()
             return HttpResponseRedirect(redirect_url)
     else:
-        form = AnswerForm(initial={'question': gs.id})
+        form = AnswerForm(initial={'question': str(pk_question)})
 
     return render(
         request, 'question.html',
-        {'question': gs, 'form': form})
+        {'question': gs, 'answers': answers, 'form': form})
 
 
 def ask(request):
