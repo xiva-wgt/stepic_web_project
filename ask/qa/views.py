@@ -81,7 +81,6 @@ def question(request, pk_question):
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
-            form._user = request.user
             _ = form.save()
             redirect_url = gs.get_absolute_url()
             return HttpResponseRedirect(redirect_url)
@@ -99,8 +98,8 @@ def ask(request):
         if form.is_valid():
             form._user = request.user
             post = form.save()
-            #redirect_url = post.get_url()
-            redirect_url = reverse('question_detail', args=[post.id])
+            redirect_url = post.get_url()
+            redirect_url = reverse('question', args=[post.id])
             return HttpResponseRedirect(redirect_url)
     else:
         form = AskForm()
