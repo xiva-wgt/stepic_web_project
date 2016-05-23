@@ -7,13 +7,14 @@ from models import Question
 from models import Answer
 from forms import AskForm
 from forms import AnswerForm
-from django.template import RequestContext
+from forms import LoginForm
+from forms import SignupForm
+from django.contrib.auth import login
 # import finish
 
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
 
 
 def test(request, *args, **kwargs):
@@ -78,6 +79,7 @@ def popular(request, *args, **kwargs):
 
 def question(request, pk_question):
     gs = get_object_or_404(Question, id=pk_question)
+    answers = gs.answer_set.all()
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
@@ -89,22 +91,16 @@ def question(request, pk_question):
 
     return render(
         request, 'question.html',
-        {'question': gs, 'form': form})
+        {'question': gs, 'form': form, 'answers': answers})
 
 
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
-        try:
-            if form.is_valid():
-                post = form.save()
-                #redirect_url = post.get_url()
-                redirect_url = post.get_absolute_url()
-                #redirect_url = reverse('question', args=[post.id])
-                print redirect_url
-                return HttpResponseRedirect(redirect_url)
-        except Exception as e:
-            print str(e)
+        if form.is_valid():
+            post = form.save()
+            redirect_url = post.get_absolute_url()
+            return HttpResponseRedirect(redirect_url)
     else:
         form = AskForm()
     return render(request, 'ask.html', {'form': form})
@@ -121,20 +117,25 @@ def question_detail(request, pk_question):
     })
 
 
-#def paginate(request, qs):
-#    try:
-#        limit = int(request.GET.get('limit', 10))
-#    except ValueError:
-#        limit = 10
-#    if limit > 100:
-#        limit = 10
-#    try:
-#        page = int(request.GET.get('page', 1))
-#    except ValueError:
-#        raise Http404
-#    paginator = Paginator(qs, limit)
-#    try:
-#       page = paginator.page(page)
-#    except EmptyPage:
-#        page = paginator.page(paginator.num_pages)
-#    return page
+def user_signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    form = SignupForm()
+    return render(request, 'signup.html', {'form': form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    form = LoginForm()
+    return render(request, 'login.html', {'form': form})

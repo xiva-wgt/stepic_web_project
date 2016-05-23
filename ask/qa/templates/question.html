@@ -9,8 +9,8 @@
     <div>{{ question.text }}, {{ question.author_id }}</div>
     <hr>
     <ul>
-    {% for answer in question.answer_set.all %}
-        <li>{{ answer }}, {{ answer.author_id }}</li>
+    {% for item_answer in answers %}
+        <li>{{ item_answer }}, {{ item_answer.author_id }}</li>
     {% endfor %}
     </ul>
     <hr>
