@@ -37,7 +37,7 @@ class Question(models.Model):
         return "/question/{0}/".format(self.id)
 
     def get_absolute_url(self):
-        return reverse('question', kwargs={'pk': self.pk})
+        return reverse('question', kwargs={'pk_question': self.pk})
 
     #Question - вопрос
     #title - заголовок вопроса
