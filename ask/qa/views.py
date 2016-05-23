@@ -90,7 +90,7 @@ def question(request, pk_question):
 
     return render(
         request, 'question.html',
-        {'question': gs, 'answers': answers, 'form': form})
+        {'question': gs, 'form': form})
 
 
 def ask(request):
