@@ -21,8 +21,8 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index),
     url(r'^inittest25/.*$', views.inittest25),
-    url(r'^login/.*$', views.test),
-    url(r'^signup/.*$', views.test),
+    url(r'^login/.*$', views.user_login, name='login'),
+    url(r'^signup/.*$', views.user_signup, name='signup'),
     url(r'^question/(?P<pk_question>\d+)/$', views.question, name='question'),
     url(r'^ask/.*$', views.ask),
     url(r'^popular/.*$', views.popular),
