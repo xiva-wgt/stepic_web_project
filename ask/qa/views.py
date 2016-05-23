@@ -55,7 +55,8 @@ def index(request, *args, **kwargs):
     return render(
         request, 'list.html',
         {'title': 'Lastest question', 'paginator': paginator,
-         'questions': page.object_list, 'page': page})
+         'questions': page.object_list, 'page': page,
+         'user': request.user, 'session': request.session})
 
 
 @require_GET
@@ -74,7 +75,8 @@ def popular(request, *args, **kwargs):
     return render(
         request, 'list.html',
         {'title': 'Popular question', 'paginator': paginator,
-         'questions': page.object_list, 'page': page})
+         'questions': page.object_list, 'page': page,
+         'user': request.user, 'session': request.session})
 
 
 def question(request, pk_question):
@@ -91,7 +93,8 @@ def question(request, pk_question):
 
     return render(
         request, 'question.html',
-        {'question': gs, 'form': form, 'answers': answers})
+        {'question': gs, 'form': form, 'answers': answers,
+         'user': request.user, 'session': request.session})
 
 
 def ask(request):
@@ -111,9 +114,8 @@ def question_detail(request, pk_question):
     answers = qs.answer_set.all()
     form = AnswerForm(initial={'question': str(pk_question)})
     return render(request, 'question.html', {
-        'question': qs,
-        'answers': answers,
-        'form': form,
+        'question': qs, 'answers': answers,
+        'form': form, 'user': request.user, 'session': request.session
     })
 
 
@@ -126,7 +128,9 @@ def user_signup(request):
                 login(request, user)
                 return HttpResponseRedirect('/')
     form = SignupForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form,
+                                           'user': request.user,
+                                           'session': request.session})
 
 
 def user_login(request):
@@ -138,4 +142,6 @@ def user_login(request):
                 login(request, user)
                 return HttpResponseRedirect('/')
     form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': form,
+                                          'user': request.user,
+                                          'session': request.session})

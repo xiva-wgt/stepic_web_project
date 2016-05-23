@@ -5,6 +5,8 @@
     <title>Signup</title>
 </head>
 <body>
+    <div>Current user: {{ user }}</div>
+    <div>Current session: {{ session }}</div>
     <form method="post" action="/signup/">
         <fieldset>
         {% csrf_token %}

@@ -5,6 +5,8 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    <div>Current user: {{ user }}</div>
+    <div>Current session: {{ session }}</div>
     <h1>{{ title }}</h1>
     {% for question in questions %}
         <p><a href="{{ question.get_url }}">{{ question }}, {{ question.author_id }}</a></p>
