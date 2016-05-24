@@ -99,11 +99,15 @@ def question(request, pk_question):
 
 def ask(request):
     if request.method == "POST":
-        form = AskForm(request.POST)
-        if form.is_valid():
-            post = form.save()
-            redirect_url = post.get_absolute_url()
-            return HttpResponseRedirect(redirect_url)
+        try:
+            form = AskForm(request.POST)
+            if form.is_valid():
+                post = form.save()
+                redirect_url = post.get_absolute_url()
+                print 'redirect to: ', redirect_url
+                return HttpResponseRedirect(redirect_url)
+        except Exception as error_message:
+            print error_message
     else:
         form = AskForm()
     return render(request, 'ask.html', {'form': form})
