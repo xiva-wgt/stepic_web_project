@@ -102,6 +102,7 @@ def ask(request):
         try:
             form = AskForm(request.POST)
             if form.is_valid():
+                form._user = request.user
                 post = form.save()
                 redirect_url = post.get_absolute_url()
                 print 'redirect to: ', redirect_url
